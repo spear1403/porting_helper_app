@@ -86,12 +86,13 @@ def skip_image():
     win.destroy()
 
 def change_bg(color):
-    global canv
-    canv.config(bg=color)
+    global canv, bg_color
+    bg_color.set(color)
+    canv.config(bg=bg_color.get())
 
 def main(found_file, line_content):
 
-    global win, canv, rect, start_x, start_y, w, h, x, y, hotspot, resize,resize_factor, linex, liney
+    global win, canv, rect, start_x, start_y, w, h, x, y, hotspot, resize,resize_factor, linex, liney, bg_color
 
     rect = None
     linex = None
@@ -101,7 +102,9 @@ def main(found_file, line_content):
     x = y = 0
     resize = False
     resize_factor = 1
-    bg_color = "black"
+    bg_color = tk.StringVar()
+    if bg_color.get() == "":
+        bg_color.set("blue")
 
     win = tk.Toplevel()
     win.title(found_file)
@@ -114,24 +117,22 @@ def main(found_file, line_content):
         print(open_file)
         slika = Image.open(open_file)
 
-
+    screen_width = win.winfo_screenwidth()
+    screen_heigth = win.winfo_screenheight()
+    print("screen size : ({0}, {1})".format(screen_width, screen_heigth))
     w, h = slika.size
     print(slika.format,slika.size,slika.mode)
     # slika = slika.convert("RGB")
     automated_hotspot = trim(slika)
 
 
-    #
-    # print(slika_invert.format,slika_invert.size,slika_invert.mode)
-    # slika_invert = ImageOps.invert(slika_invert)
-    # automated_hotspot = slika.getbbox()
-
-
-    if w > 1024 or h > 576:
+    if w > screen_width-30 or h > screen_heigth-70:
+        print("Image too big for the screen. Resizing...")
         resize = True
-        resize_factor = 576 / h
+        resize_factor = min((screen_width -70) / w,(screen_heigth -160) / h)
     w = int(w * resize_factor)
     h = int(h * resize_factor)
+    print("New size ({0},{1})".format(w,h))
 
     if automated_hotspot is not None:
         a,b,c,d = automated_hotspot
@@ -167,7 +168,7 @@ def main(found_file, line_content):
     quitButton = tk.Button(frame1, text='Save', command=close_window).pack(side=tk.LEFT)
     skipButton = tk.Button(frame1, text='Skip', command=skip_image).pack(side=tk.LEFT)
 
-    canv = tk.Canvas(frame2,bg=bg_color, width=w, height=h)#, cursor='crosshair')
+    canv = tk.Canvas(frame2,bg=bg_color.get(), width=w, height=h)#, cursor='crosshair')
 
     canv.bind('<ButtonPress-1>', onCanvasClick)
     canv.bind("<B1-Motion>", onCanvasMove)
@@ -188,12 +189,6 @@ def main(found_file, line_content):
     return hotspot
 
 if __name__ == '__main__':
-    found_file = "image.png"
-    root = tk.Tk()
 
-    button1 = tk.Button(root, text = 'Click me', width=30, command = lambda:main(found_file, "proba"))
-    button2 = tk.Button(root, text = 'Quit', width=30, command = root.quit)
-    button1.pack(side=tk.LEFT)
-    button2.pack(side=tk.LEFT)
-
-    root.mainloop()
+    found_file = filedialog.askopenfilename()
+    main(found_file, "proba")

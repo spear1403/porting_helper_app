@@ -13,6 +13,7 @@ class LineSplitter:
 
         line_lst = line_content.split()
         line_lst = [w.replace("'", '"') for w in line_lst]
+        print(line_lst)
 
         if "action" in line_content:
             print("found action")
@@ -51,7 +52,7 @@ class LineSplitter:
                         print(action)
                         return indent, idle, hover, action
                 elif 'xalign' in item:
-                    if line_lst[index+1] != "0":
+                    if line_lst[index+1] != "0.5":
                         print("ypos has a value that is not 0")
                         action = None
                         print(action)

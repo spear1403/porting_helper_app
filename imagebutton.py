@@ -1,10 +1,11 @@
 from line_split import LineSplitter
 from block_buster import BlockBuster
 import get_hotspot
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 import tkinter as tk
 import os
 import shutil
+import pickle
 
 class Imagebutton:
 
@@ -83,7 +84,10 @@ class Imagebutton:
 
                                 for g in gamedirs:
                                     if g in hover:
+                                # if bool(set(gamedirs).intersection(hover.split(os.sep)))
                                         found_file = os.path.join(game_path, hover)
+                                        print('found gamedir in imagepath')
+                                        break
                                     else:
                                         found_file = os.path.join(game_path, "images", hover)
 
@@ -93,6 +97,8 @@ class Imagebutton:
                                 for root, dirs, files in os.walk(file_dir):
                                     for file in files:
                                         if hover.lower() in file.lower():
+                                            found_file = os.path.join(root,file)
+                                        elif hover.lower().replace(" ","_") in file.lower():
                                             found_file = os.path.join(root,file)
 
                                 print(found_file)
@@ -137,20 +143,52 @@ class Imagebutton:
     def open_file():
         rpy = tk.Tk()
         rpy.withdraw()
-        global rpy_file
+        hotspot_dict = {}
         rpy_file = filedialog.askopenfilename(filetypes=[('Renpy rpy files', '*.rpy'), ('All files', '*,*')])
         print('File path: {}'.format(rpy_file))
+        Imagebutton.replace_imagebuttons(rpy_file, hotspot_dict)
+
+    def automatika(gameDir,name):
+        MsgBox = tk.messagebox.askquestion ('Load','Do you want to load a hotspot dictionary from earlier',icon = 'question')
+        if MsgBox == 'yes':
+           hotspot_file = filedialog.askopenfilename(filetypes=[('hotspot files', '*.hotspot'), ('All files', '*,*')])
+           with open(hotspot_file, 'rb') as f:
+               hotspot_dict = pickle.load(f)
+        else:
+            tk.messagebox.showinfo('Return','A new hotspot dictionary will be created')
+            hotspot_dict = {}
+        for root, dirnames, files in os.walk(gameDir, topdown=True):
+            #print(dirnames)
+            dirnames[:] = [d for d in dirnames if d not in 'tl']
+            for file in files:
+                if file.lower().endswith('.rpy'):
+                    rpy_file = os.path.join(root, file)
+                    if not file == "asset-index.rpy":
+                        print("{0}".format(rpy_file))
+                        Imagebutton.replace_imagebuttons(rpy_file, hotspot_dict)
+        if os.path.isdir(os.path.join(os.getcwd(),'hotspots')):
+            pass
+        else:
+            os.makedirs(os.path.join(os.getcwd(),'hotspots'))
+        save_path = os.path.join(os.getcwd(),'hotspots',f'{name}_Dict.hotspot')
+        with open(save_path, "wb") as myFile:
+            pickle.dump(hotspot_dict, myFile)
+        print("############ (-: All done :-) ##############")
+
+    def single_imagebutton():
+        hotspot_dict = {}
+        rpy_file = filedialog.askopenfilename(filetypes=[('Renpy rpy files', '*.rpy'), ('All files', '*,*')])
+        Imagebutton.replace_imagebuttons(rpy_file, hotspot_dict)
 
 
 
 if __name__ == '__main__':
-    hotspot_dict = {}
-    count_list = []
+
     root = tk.Tk()
     root.title('Cool App')
     button_open = tk.Button(root, text='Open File', width=25, command=Imagebutton.open_file)
     button_open.pack()
-    button_edit = tk.Button(root, text='Edit File', width=25, command=lambda: Imagebutton.replace_imagebuttons(rpy_file, hotspot_dict))
+    button_edit = tk.Button(root, text='Quit', width=25, command=root.destroy)
     button_edit.pack()
 
     root.mainloop()
