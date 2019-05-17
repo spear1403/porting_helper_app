@@ -6,8 +6,8 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
     cwebp = 'cwebp'
     ffmpeg = 'ffmpeg'
     if OS=='Windows':
-        cwebp = 'cwebp.exe'
-        ffmpeg = 'ffmpeg.exe'
+        cwebp = os.path.join('tools', 'cwebp.exe')
+        ffmpeg = os.path.join('tools', 'ffmpeg.exe')
     if video_resize == None:
         vf_scale = ''
     else:
