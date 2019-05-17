@@ -9,10 +9,10 @@ class GuiWindow(object):
         self.master = master
 
         self.OS = platform.system()
-        self.checkmark = ImageTk.PhotoImage(file = "check.png")
-        self.blank = ImageTk.PhotoImage(file = "blank.png")
-        self.icon = ImageTk.PhotoImage(file = "android-icon.png")
-        self.no_image = ImageTk.PhotoImage(file = "no_image.png")
+        self.checkmark = ImageTk.PhotoImage(file = os.path.join("images", "check.png"))
+        self.blank = ImageTk.PhotoImage(file = os.path.join("images", "blank.png"))
+        self.icon = ImageTk.PhotoImage(file = os.path.join("images", "android-icon.png"))
+        self.no_image = ImageTk.PhotoImage(file = os.path.join("images", "no_image.png"))
         self.file_types =["Archive files","Image Files","Audio Files","Video Files","Rpy Files","Rpyc Files"]
         self.stat_list = [0] * len(self.file_types)
         self.icon_found = False
