@@ -1,4 +1,3 @@
-from finder import Functions
 from line_split import LineSplitter
 import os
 import get_hotspot
