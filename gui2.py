@@ -141,13 +141,13 @@ class MainApp:
             print("Presplash image already there")
         else:
             app.set_progress_text('>>>Copying android presplash image to game directory')
-            shutil.copy('android-presplash.jpg', app.baseDir.get())
+            shutil.copy(os.path.join('spear1403', 'android-presplash.jpg'), app.baseDir.get())
 
         if os.path.isfile(os.path.join(app.gameDir.get(),'spear1403.rpy')):
             print("spear1403.rpy already there")
         else:
             app.set_progress_text('>>>Copying the >spear1403.rpy< file to the game directory')
-            shutil.copy('spear1403.rpy', app.gameDir.get())
+            shutil.copy(os.path.join('spear1403', 'spear1403.rpy'), app.gameDir.get())
         app.set_progress_text('>>>Copying choice buttons to the phone folder')
         Definitions.hover_button_copy(app.gameDir.get())
         if app.icon_found == False:

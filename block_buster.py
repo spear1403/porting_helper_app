@@ -205,7 +205,8 @@ class BlockBuster:
 
                         image = image.replace(r"%s",'hover')
                         image = image.replace("[Timeday]",'2')
-                        if not ".png" in image:
+                        extens_list = [".png",".webp",".jpg"]
+                        if not any(extens in image for extens in extens_list):
                             image = image+".png"
 
                         print(image)

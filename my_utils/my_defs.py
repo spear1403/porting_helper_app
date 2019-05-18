@@ -61,7 +61,7 @@ class Definitions():
                         , 'window_icon.png']
         images_dir = os.path.join(dir, 'images')
         gui_dir = os.path.join(dir, 'gui')
-        icon = 'android-icon.png'
+        icon = os.path.join('images', 'android-icon.png')
 
         for icon_file in icon_names:
             if os.path.isfile(os.path.join(gui_dir, icon_file)):
