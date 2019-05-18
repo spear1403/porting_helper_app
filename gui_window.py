@@ -69,7 +69,10 @@ class GuiWindow(object):
         self.C4_label.grid(row=8, column=1, sticky=tk.W)
 
         self.CheckVar5 = tk.IntVar()
-        self.C5 = tk.Checkbutton(self.frame2, variable=self.CheckVar5)
+        if self.OS == "Linux":
+            self.C5 = tk.Checkbutton(self.frame2, variable=self.CheckVar5,state=tk.DISABLED)
+        else:
+            self.C5 = tk.Checkbutton(self.frame2, variable=self.CheckVar5)
         self.C5.grid(row=5)
         self.C5_label = tk.Label(self.frame2, font='Helvetica 12', text="Decompile rpyc files")
         self.C5_label.grid(row=5, column=1, sticky=tk.W)
