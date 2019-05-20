@@ -1,4 +1,5 @@
 import os
+import struct
 import shutil
 from PIL import Image
 
@@ -20,11 +21,23 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
     if image:
         if file.lower().endswith('.webp'):
             print("found one")
-            new_image = Image.open(file)
-            print(new_image.getbands())
-            new_image.save(file,'png')
+            try:
+                new_image = Image.open(file)
+            except Exception as e:
+                print(e)
+                # webp header fix from bas@F95zone ###############
+                b = os.path.getsize(file)-8
+                c = struct.pack('<I', b)
+                offset = 0o4
+                with open(file, 'r+b') as f:
+                    f.seek(offset)
+                    f.write(c)
+                ##################################################
+                new_image = Image.open(file)
+                print(new_image.getbands())
+                new_image.save(file,'png')
 
-        cmd = f'{cwebp} "{file}" -q {quality} -z 6 -mt -v -progress -o "{tmpFile}"'
+        cmd = f'{cwebp} "{file}" -q {quality} -z 6 -mt -v -quiet -o "{tmpFile}"'
     elif audio:
         tmpFile = tmpFile + ".mp3"
         cmd = f'{ffmpeg} -i "{file}" -codec:a libmp3lame -loglevel warning -vn -qscale:a 7 "{tmpFile}"'

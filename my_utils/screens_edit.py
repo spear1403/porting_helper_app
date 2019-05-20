@@ -55,63 +55,64 @@ def parse_block_list(block_list):
     return block_list
 
 def open_screens_for_edit(file):
-    global quick_block, quick_menu, set_default, append_screens
-    quick_block = ['screen quick_menu():\n',
-                        '   zorder 100\n',
-                        '   hbox:\n',
-                        '       style_prefix "quick"\n',
-                        '       xalign 0.5\n',
-                        '       yalign 1.0\n',
-                        '       if quick_menu:\n',
-                        '           textbutton _("Quick1") action ShowMenu()\n',
-                        '       if quick_menu2:\n',
-                        '           textbutton _("Quick2") action ShowMenu()\n',]
-    quick_menu = False
-    set_default = False
-    append_screens = False
-    block_list = []
-    #backup orig file
-    shutil.copy(file,file+'.bak')
-    temp_file = file+'.temp'
-    with open(file, 'r',encoding="utf8") as in_file:
-        with open(temp_file, 'w',encoding="utf8") as out_file:
-            for line in in_file:
+    if os.path.isfile(file + "_orig.bak") == False:
+        global quick_block, quick_menu, set_default, append_screens
+        quick_block = ['screen quick_menu():\n',
+                            '   zorder 100\n',
+                            '   hbox:\n',
+                            '       style_prefix "quick"\n',
+                            '       xalign 0.5\n',
+                            '       yalign 1.0\n',
+                            '       if quick_menu:\n',
+                            '           textbutton _("Quick1") action ShowMenu()\n',
+                            '       if quick_menu2:\n',
+                            '           textbutton _("Quick2") action ShowMenu()\n',]
+        quick_menu = False
+        set_default = False
+        append_screens = False
+        block_list = []
+        #backup orig file
+        shutil.copy(file, file + "_orig.bak")
+        temp_file = file+'.temp'
+        with open(file, 'r',encoding="utf8") as in_file:
+            with open(temp_file, 'w',encoding="utf8") as out_file:
+                for line in in_file:
 
-                if block_list:
-                    if len(line)-len(line.lstrip()) > 0:
-                        block_list.append(line)
-                    else:
-                        print('Block list: {}'.format(block_list))
-                        if not len(block_list) == 1 and not block_list[0].lstrip().startswith('#'):
-                            print("Parsing: ???")
-                            block_list = parse_block_list(block_list)
-                        for l in block_list:
-                            out_file.write(l)
-                        block_list.clear()
+                    if block_list:
+                        if len(line)-len(line.lstrip()) > 0:
+                            block_list.append(line)
+                        else:
+                            print('Block list: {}'.format(block_list))
+                            if not len(block_list) == 1 and not block_list[0].lstrip().startswith('#'):
+                                print("Parsing: ???")
+                                block_list = parse_block_list(block_list)
+                            for l in block_list:
+                                out_file.write(l)
+                            block_list.clear()
+                            block_list.append(line)
+                            continue
+
+                    if len(line)-len(line.lstrip()) == 0:
                         block_list.append(line)
                         continue
+                        # print('Both lists are empty, You fucked something up')
 
-                if len(line)-len(line.lstrip()) == 0:
-                    block_list.append(line)
-                    continue
-                    # print('Both lists are empty, You fucked something up')
+                if block_list:
+                    print('Block list: {}'.format(block_list))
+                    parsed_list = parse_block_list(block_list)
+                    for l in parsed_list:
+                        out_file.write(l)
 
-            if block_list:
-                print('Block list: {}'.format(block_list))
-                parsed_list = parse_block_list(block_list)
-                for l in parsed_list:
-                    out_file.write(l)
+                if quick_menu == False:
+                    for w in quick_block:
+                        out_file.write(w)
+                if append_screens == False:
+                    out_file.write('\ninit python:\n    config.overlay_screens.append("quick_menu")\n')
+                if set_default == False:
+                    out_file.write('\ndefault quick_menu = False\ndefault quick_menu2 = True\n')
 
-            if quick_menu == False:
-                for w in quick_block:
-                    out_file.write(w)
-            if append_screens == False:
-                out_file.write('\ninit python:\n    config.overlay_screens.append("quick_menu")\n')
-            if set_default == False:
-                out_file.write('\ndefault quick_menu = False\ndefault quick_menu2 = True\n')
-
-    shutil.copyfile(temp_file, file)
-    os.remove(temp_file )
+        shutil.copyfile(temp_file, file)
+        os.remove(temp_file )
 
 if __name__ == "__main__":
     file = askopenfilename(filetypes=[('Renpy rpy files', '*.rpy'), ('All files', '*,*')])
