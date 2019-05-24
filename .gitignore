@@ -1,2 +1,4 @@
 *.pyc
-tools\*
+*.exe
+un.rpyc
+linux_unrpyc

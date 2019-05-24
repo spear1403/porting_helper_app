@@ -76,9 +76,10 @@ class MainApp:
                                 continue
                             else:
                                 if app.OS == 'Windows':
-                                    cmd = subprocess.Popen("win_unrpyc.exe "'"{0}"'"".format(rpyc))
+                                    unrpyc_my = os.path.join("tools","win_unrpyc.exe")
                                 else:
-                                    cmd = subprocess.Popen("linux_unrpyc {0}".format(rpyc))
+                                    unrpyc_my = os.path.join("tools","linux_unrpyc")
+                                cmd = subprocess.Popen(f"{win_unrpyc} {rpyc}")
                                 cmd.wait()
 
                 app.set_checkmark(5)
@@ -135,6 +136,15 @@ class MainApp:
                 app.set_checkmark(4)
             file_count = app.set_stats(Status.count_files(app.gameDir.get()))
 
+        end = time.time()
+        totalTime = end - start
+        print(totalTime)
+        minute, sekunde = divmod(int(totalTime), 60)
+        print(minute, sekunde)
+        app.set_progress_text('Completed in {0}:{1:0=2d} minutes'.format(minute, sekunde))
+        app.button16.config(state=tk.NORMAL)
+
+    def finish_up():
         print("##################################################################################\n")
 
         if os.path.isfile(os.path.join(app.baseDir.get(),'android-presplash.jpg')):
@@ -169,12 +179,6 @@ class MainApp:
                 app.patched.set(True)
 
         print("\n###################################################################################")
-        end = time.time()
-        totalTime = end - start
-        print(totalTime)
-        minute, sekunde = divmod(int(totalTime), 60)
-        print(minute, sekunde)
-        app.set_progress_text('Completed in {0}:{1:0=2d} minutes'.format(minute, sekunde))
 
 if __name__ == '__main__':
     root = tk.Tk()
@@ -191,6 +195,7 @@ if __name__ == '__main__':
     app.button6.config(command=lambda:Definitions.open_rpy_for_edit(app.gameDir.get()))
     app.button14.config(command=lambda:Imagebutton.automatika(app.gameDir.get(),app.gameName.get()))
     app.button15.config(command=Imagebutton.single_imagebutton)
+    app.button16.config(command=MainApp.finish_up)
     app.button2.config(command=MainApp.go)
 
     root.mainloop()

@@ -95,7 +95,6 @@ def open_screens_for_edit(file):
                     if len(line)-len(line.lstrip()) == 0:
                         block_list.append(line)
                         continue
-                        # print('Both lists are empty, You fucked something up')
 
                 if block_list:
                     print('Block list: {}'.format(block_list))
