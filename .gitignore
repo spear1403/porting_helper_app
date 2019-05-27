@@ -1,4 +1,8 @@
 *.pyc
 *.exe
+*.hotspot
+*.log
 un.rpyc
 linux_unrpyc
+tools\*
+hotspots\*

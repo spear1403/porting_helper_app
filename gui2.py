@@ -75,11 +75,12 @@ class MainApp:
                             if os.path.isfile(os.path.splitext(rpyc)[0] + ".rpy"):
                                 continue
                             else:
+                                print(rpyc)
                                 if app.OS == 'Windows':
                                     unrpyc_my = os.path.join("tools","win_unrpyc.exe")
                                 else:
                                     unrpyc_my = os.path.join("tools","linux_unrpyc")
-                                cmd = subprocess.Popen(f"{win_unrpyc} {rpyc}")
+                                cmd = subprocess.Popen(f'{unrpyc_my} "{rpyc}"')
                                 cmd.wait()
 
                 app.set_checkmark(5)
