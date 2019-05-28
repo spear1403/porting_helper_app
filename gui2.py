@@ -137,6 +137,15 @@ class MainApp:
                 app.set_checkmark(4)
             file_count = app.set_stats(Status.count_files(app.gameDir.get()))
 
+        if os.path.isfile(os.path.join(app.baseDir.get(),'android-presplash.jpg')):
+            print("Presplash image already there")
+        else:
+            app.set_progress_text('>>>Copying android presplash image to game directory')
+            shutil.copy(os.path.join('spear1403', 'android-presplash.jpg'), app.baseDir.get())
+            if app.icon_found == False:
+                app.set_progress_text('>>>Copying android icon to game directory')
+                new_icon_image = Definitions.icon_copy(app.gameDir.get())
+                MainApp.set_icon_image(new_icon_image)
         end = time.time()
         totalTime = end - start
         print(totalTime)
@@ -148,11 +157,7 @@ class MainApp:
     def finish_up():
         print("##################################################################################\n")
 
-        if os.path.isfile(os.path.join(app.baseDir.get(),'android-presplash.jpg')):
-            print("Presplash image already there")
-        else:
-            app.set_progress_text('>>>Copying android presplash image to game directory')
-            shutil.copy(os.path.join('spear1403', 'android-presplash.jpg'), app.baseDir.get())
+
 
         if os.path.isfile(os.path.join(app.gameDir.get(),'spear1403.rpy')):
             print("spear1403.rpy already there")
@@ -161,10 +166,7 @@ class MainApp:
             shutil.copy(os.path.join('spear1403', 'spear1403.rpy'), app.gameDir.get())
         app.set_progress_text('>>>Copying choice buttons to the phone folder')
         Definitions.hover_button_copy(app.gameDir.get())
-        if app.icon_found == False:
-            app.set_progress_text('>>>Copying android icon to game directory')
-            new_icon_image = Definitions.icon_copy(app.gameDir.get())
-            MainApp.set_icon_image(new_icon_image)
+
         app.set_progress_text('>>>Deleting lib and renpy folders from base directory')
         Definitions.delete_lib_renpy(app.gameDir.get())
 
