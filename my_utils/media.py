@@ -34,7 +34,10 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
                     f.write(c)
                 ##################################################
                 new_image = Image.open(file)
-                print(new_image.getbands())
+            bands = new_image.getbands()
+            print(bands)
+            if 'A' in bands:
+                print('Transparency Alert!')
                 new_image.save(file,'png')
 
         cmd = f'{cwebp} "{file}" -q {quality} -z 6 -mt -v -quiet -o "{tmpFile}"'

@@ -106,7 +106,7 @@ class MainApp:
                     for index,video in enumerate(video_files):
                         app.set_percent(int(index+1)/len(video_files)*100)
                         app.set_progress_text('Processing---{0}({1}/{2})'.format(os.path.basename(video), int(index+1), len(video_files)))
-                        media.compress_media(video, quality=crf, video=True)
+                        media.compress_media(video, quality=crf, video=True, OS=app.OS)
                 print("Done")
                 app.set_checkmark(8)
 
@@ -116,7 +116,7 @@ class MainApp:
                     for index,audio in enumerate(audio_files):
                         app.set_percent(int(index+1)/len(audio_files)*100)
                         app.set_progress_text('Processing---{0}({1}/{2})'.format(os.path.basename(audio), int(index+1), len(audio_files)))
-                        media.compress_media(audio, audio=True)
+                        media.compress_media(audio, audio=True, OS=app.OS)
                 print("Done")
                 app.set_checkmark(7)
 
