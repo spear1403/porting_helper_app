@@ -38,6 +38,7 @@ class MainApp:
             global file_count
             file_count = app.set_stats(Status.count_files(app.gameDir.get()))
             print("##################################################################################\n")
+            print('>>>OS:' + app.OS)
             print('>>>gameName:' + app.gameName.get())
             print('>>>gameDir:' + app.gameDir.get())
             app.left.config(font='Helvetica 12 bold', text=app.gameName.get())
@@ -196,7 +197,7 @@ if __name__ == '__main__':
     app.baseDir = tk.StringVar()
     app.patched = tk.BooleanVar()
     app.button1.config(command = MainApp.open_dir)
-    app.button6.config(command=lambda:Definitions.open_rpy_for_edit(app.gameDir.get()))
+    app.button6.config(command=lambda:Definitions.open_rpy_for_edit(app.gameDir.get(),app.OS))
     app.button14.config(command=lambda:Imagebutton.automatika(app.gameDir.get(),app.gameName.get()))
     app.button15.config(command=Imagebutton.single_imagebutton)
     app.button16.config(command=MainApp.finish_up)

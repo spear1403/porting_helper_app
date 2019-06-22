@@ -21,26 +21,40 @@ class Definitions():
                     file_list.append(os.path.join(root,file))
         return (file_list)
 
-    def open_rpy_for_edit(gameDir):
-    	if os.path.exists(r'C:\Program Files (x86)\Notepad++\notepad++.exe'):
-    		notepad_path = r'C:\Program Files (x86)\Notepad++\notepad++.exe'
-    	elif os.path.exists(r'C:\Program Files\Notepad++\notepad++.exe'):
-    		notepad_path = r'C:\Program Files\Notepad++\notepad++.exe'
+    def open_rpy_for_edit(gameDir,opsis):
+        if os.path.exists(r'C:\Program Files (x86)\Notepad++\notepad++.exe'):
+            notepad_path = r'C:\Program Files (x86)\Notepad++\notepad++.exe'
+        elif os.path.exists(r'C:\Program Files\Notepad++\notepad++.exe'):
+            notepad_path = r'C:\Program Files\Notepad++\notepad++.exe'
+        elif shutil.which("geany") is not None:
+            notepad_path = "geany"
+        else:
+            notepad_path = None
+            
+        print(notepad_path)
 
-    	if not notepad_path == None :
-    		for root, dirnames, files in os.walk(gameDir, topdown=True):
-    			#print(dirnames)
-    			dirnames[:] = [d for d in dirnames if d not in 'tl']
-    			for file in files:
-    				if file.lower().endswith('.rpy'):
-    					rpyFile = os.path.join(root, file)
-    					if not file == "asset-index.rpy":
-    						try:
-    							subprocess.Popen([notepad_path, rpyFile])
-    							print(rpyFile)
-    						except:
-    							pass
-
+        if notepad_path is not None :
+            rpy_list = []
+            print('got editor')
+            for root, dirnames, files in os.walk(gameDir, topdown=True):
+                #print(dirnames)
+                dirnames[:] = [d for d in dirnames if d not in 'tl']
+                for file in files:
+                    if file.lower().endswith('.rpy'):
+                        rpyFile = os.path.join(root, file)
+                        if not file == "asset-index.rpy":
+                            rpy_list.append(rpyFile)
+                            try:
+                                if opsis == 'Windows':
+                                    subprocess.Popen([notepad_path, rpyFile])
+                                print(rpyFile)
+                                
+                            except:
+                                pass
+            if opsis == 'Linux':
+                os.popen(f'{notepad_path} {" ".join(rpy_list)}')
+        else:
+            print("No supported text editor found ... :-(")
     def hover_button_copy(gameDir):
         phone_dir = os.path.join(gameDir, 'gui', 'phone', 'button')
         #print(phone_dir)
