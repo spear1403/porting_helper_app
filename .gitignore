@@ -2,6 +2,8 @@
 *.exe
 *.hotspot
 *.log
+*.bat
+*.sh
 un.rpyc
 linux_unrpyc
 tools\*
