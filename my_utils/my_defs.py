@@ -34,7 +34,7 @@ class Definitions():
                     rpyFile = os.path.join(root, file)
                     if not file == "asset-index.rpy":
                         try:
-                            os.popen(f'{txt_editor_cmd} {rpyFile}')
+                            os.popen(f'{txt_editor_cmd} "{rpyFile}"')
                         except:
                             print("No supported text editor found ... :-(")
                             break

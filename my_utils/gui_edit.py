@@ -57,8 +57,7 @@ def open_gui_for_edit(file):
                         indent = len(line)-len(line.lstrip())
                         block_list.append(line)
                         continue
-                        # print('Both lists are empty, You fucked something up')
-
+                        
                     out_file.write(line)
 
                 if block_list:

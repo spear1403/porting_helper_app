@@ -177,10 +177,23 @@ class MainApp:
         else:
             print('patching screens and gui file')
             if os.path.isfile(os.path.join(app.gameDir.get(),'screens.rpy')):
-                screens_edit.open_screens_for_edit(os.path.join(app.gameDir.get(),'screens.rpy'))
+                screens_file = os.path.join(app.gameDir.get(),'screens.rpy')
+            elif os.path.isfile(os.path.join(app.gameDir.get(),'scripts','screens.rpy')):
+                screens_file = os.path.join(app.gameDir.get(),'scripts','screens.rpy')
+            else:
+                screens_file = None
+            if screens_file is not None:
+                screens_edit.open_screens_for_edit(screens_file)
                 app.patched.set(True)
+
             if os.path.isfile(os.path.join(app.gameDir.get(),'gui.rpy')):
-                gui_edit.open_gui_for_edit(os.path.join(app.gameDir.get(),'gui.rpy'))
+                gui_file = os.path.join(app.gameDir.get(),'gui.rpy')
+            elif os.path.isfile(os.path.join(app.gameDir.get(),'scripts','gui.rpy')):
+                gui_file = os.path.join(app.gameDir.get(),'scripts','gui.rpy')
+            else:
+                gui_file = None
+            if gui_file is not None:
+                gui_edit.open_gui_for_edit(gui_file)
                 app.patched.set(True)
 
         print("\n###################################################################################")

@@ -1,4 +1,11 @@
-
+init -2 python:
+    class GetInput(Action):
+        def __init__(self,screen_name,input_id):
+            self.screen_name=screen_name
+            self.input_id=input_id
+        def __call__(self):
+            if renpy.get_widget(self.screen_name,self.input_id):
+                return str(renpy.get_widget(self.screen_name,self.input_id).content)
 
 init:
     python hide:
@@ -14,8 +21,6 @@ init:
             persistent.set_skip_unseen = True
             _preferences.skip_unseen = True
         
-init:
-
     style quick_button:
         is default
         background None
@@ -53,3 +58,20 @@ screen quick_menu():
         if quick_menu2:
 
             textbutton ("<") action [ SetVariable('quick_menu', True ), SetVariable('quick_menu2', False )]
+            
+screen input(prompt):
+    variant "touch"
+    style_prefix "input"
+
+    window:
+
+        vbox:
+            xalign 0.5
+            ypos -500
+            
+            frame:
+                background None
+                has vbox:
+                    text prompt style "start_title_text"
+                    input id "input"
+                    textbutton "Ok" action GetInput("input","input")
