@@ -1,7 +1,9 @@
 import os
 import struct
 import shutil
+import imghdr
 from PIL import Image
+from tkinter.filedialog import askopenfilename
 
 def compress_media(file, quality=None, video=False, video_resize='720', image=False, audio=False, OS='Windows'):
     cwebp = 'cwebp'
@@ -17,9 +19,11 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
     oldSize = os.path.getsize(file)
     tmpFile = file + '.temp'
     # print(tmpFile)
-    print("{0}".format(file))
+    print(f"{file}")
     if image:
-        if file.lower().endswith('.webp'):
+        image_type = imghdr.what(file)
+        print(image_type)
+        if image_type.lower()=='webp':
             print("found one")
             try:
                 new_image = Image.open(file)
@@ -64,3 +68,7 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
         os.remove(tmpFile)
     if os.path.isfile('ffmpeg2pass-0.log'):
         os.remove('ffmpeg2pass-0.log')
+
+if __name__ == "__main__":
+    file = askopenfilename()
+    compress_media(file,quality=65,image=True)
