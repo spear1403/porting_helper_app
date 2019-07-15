@@ -16,6 +16,32 @@ class BlockBuster:
                         'EP4H+"':'"images/episode4_GS/hotspot_hover/','EP5B+"':'"images/episode5_GS/backgrounds/',
                         'EP5H+"':'"images/episode5_GS/hotspot_hover/','EP5I+"':'"images/episode5_GS/hotspot_idle/'
                         }
+        showerblock_destinations = {
+                        "zone_complete":"images/showerblock01/showerblock_gui/showerblock01_zone_complete_%s.png",
+                        "move_on":"images/showerblock01/showerblock_gui/showerblock01_move_on_%s.png",
+                        "landing_to_shower":"images/showerblock01/showerblock_gui/showerblock01_landing_to_showers_%s.png",
+                        "landing_to_door":"images/showerblock01/showerblock_gui/showerblock01_landing_to_door_%s.png",
+                        "landing_to_basins":"images/showerblock01/showerblock_gui/showerblock01_landing_to_basins_%s.png",
+                        "landing_to_lockers":"images/showerblock01/showerblock_gui/showerblock01_landing_to_lockers_%s.png",
+                        "shower_to_lockers":"images/showerblock01/showerblock_gui/showerblock01_showers_to_lockers_%s.png",
+                        "shower_to_basins":"images/showerblock01/showerblock_gui/showerblock01_showers_to_basins_%s.png",
+                        "lockers_to_basins":"images/showerblock01/showerblock_gui/showerblock01_lockers_to_basins_%s.png",
+                        "lockers_to_showers":"images/showerblock01/showerblock_gui/showerblock01_lockers_to_showers_%s.png",
+                        "lockers_to_next_isle":"images/showerblock01/showerblock_gui/showerblock01_lockers_to_next_isle_%s.png"
+                        }
+        showerblock_chars = {
+                        "basin_sexy_alien":"images/showerblock01/showerblock_gui/showerblock01_basins_sexy_alien_%s.png",
+                        "basin_geek":"images/showerblock01/showerblock_gui/showerblock01_basins_geek_%s.png",
+                        "shower_dude":"images/showerblock01/showerblock_gui/showerblock01_shower_dude_%s.png",
+                        "shower_blonde":"images/showerblock01/showerblock_gui/showerblock01_shower_blonde_%s.png",
+                        "shower_sexy_aliens":"images/showerblock01/showerblock_gui/showerblock01_shower_sexy_aliens_%s.png",
+                        "lockers_jock":"images/showerblock01/showerblock_gui/showerblock01_locker_jock_%s.png",
+                        "lockers_perv":"images/showerblock01/showerblock_gui/showerblock01_locker_perv_%s.png",
+                        "lockers_purple":"images/showerblock01/showerblock_gui/showerblock01_locker_purple_%s.png",
+                        "lockers_jock_peep":"images/showerblock01/showerblock_gui/showerblock01_locker_jock_peep_%s.png",
+                        "lockers_perv_peep":"images/showerblock01/showerblock_gui/showerblock01_locker_perv_peep_%s.png",
+                        "lockers_purple_peep":"images/showerblock01/showerblock_gui/showerblock01_locker_purple_peep_%s.png"
+                        }
         tab = "    "
         indent = (len(b_list[0])-len(b_list[0].lstrip())) * " " + tab
         same_indent = indent
@@ -154,10 +180,25 @@ class BlockBuster:
                                 print(k, 'corresponds to', v)
                                 hover_line = hover_line.replace(k,v)
                                 break
+
                         image = hover_line.split('"')[1]
+                        ############## Spacecorps XXX ##########################
+                        for k,v in showerblock_destinations.items():
+                            if k in hover_line:
+                                print(k, 'corresponds to', v)
+                                image = v
+                                break
+
+                        for k,v in showerblock_chars.items():
+                            if k in hover_line:
+                                print(k, 'corresponds to', v)
+                                image = v
+                                break
+                        ########################################################
+
                         image = image.lstrip("/")
                         print(image)
-                        ############## Lylas Curse #########################
+                        ############## Lylas Curse #############################
                         # if "BG_" in image:
                         #     image = image.replace("BG_","images/Environments/")+".png"
                         #     print (image)
@@ -201,7 +242,7 @@ class BlockBuster:
                         #                             image = image.replace(s+"_",s+"/")
                         #                             break
                         #                 break
-                        ################################################################
+                        ########################################################
 
                         image = image.replace(r"%s",'hover')
                         image = image.replace("[Timeday]",'2')
@@ -255,12 +296,12 @@ class BlockBuster:
                             if focus_index is not None:
                                 b_list[focus_index] = "{0}# {1}".format(same_indent,b_list[focus_index].lstrip())
 
-                            if hover_index is not None:
-                                if 'auto' in b_list[hover_index]:
-                                    idle_line = b_list[hover_index].replace('auto','idle')
-                                    idle_line = idle_line.replace(r'%s','idle')
-                                    hover_line = idle_line.replace('idle','hover')
-                                    b_list[hover_index] = "{0}{1}".format(idle_line,hover_line)
+                            # if hover_index is not None:
+                            #     if 'auto' in b_list[hover_index]:
+                            #         idle_line = b_list[hover_index].replace('auto','idle')
+                            #         idle_line = idle_line.replace(r'%s','idle')
+                            #         hover_line = idle_line.replace('idle','hover')
+                            #         b_list[hover_index] = "{0}{1}".format(idle_line,hover_line)
 
                             b_list[0] = b_list[0].replace("imagebutton","imagemap")
 
