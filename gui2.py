@@ -8,6 +8,7 @@
 # A helper application for porting Ren'py games to android.
 ##############################################################################
 import os
+import configparser
 import shutil
 import subprocess
 import time
@@ -27,16 +28,14 @@ class MainApp:
     def open_dir():
         app.reset_all()
         app.patched.set(False)
-        app.baseDir.set(askdirectory())
+        if config.has_option('Paths','Default Path'):
+            default_path = config['Paths']['Default Path']
+        else:
+            default_path = os.getcwd()
+        app.baseDir.set(askdirectory(initialdir = default_path))
         if os.path.exists(os.path.join(app.baseDir.get(), 'game')):
             app.gameName.set(os.path.basename(app.baseDir.get()))
             app.gameDir.set(os.path.join(app.baseDir.get(), "game"))
-            if os.path.isfile(os.path.join(app.baseDir.get(),'android-icon.png')):
-                app.icon_found = True
-                print("Icon already there")
-                MainApp.set_icon_image(os.path.join(app.baseDir.get(),'android-icon.png'))
-            global file_count
-            file_count = app.set_stats(Status.count_files(app.gameDir.get()))
             print("##################################################################################\n")
             print('>>>OS:' + app.OS)
             print('>>>gameName:' + app.gameName.get())
@@ -44,11 +43,26 @@ class MainApp:
             app.left.config(font='Helvetica 12 bold', text=app.gameName.get())
             app.left.update()
             print('>>>dirOpen:' + app.baseDir.get())
-            print("\n##################################################################################\n")
+            if os.path.dirname(app.baseDir.get()) != default_path:
+                config['Paths'] = {'Default Path' : os.path.dirname(app.baseDir.get())}
+                print(f">>>default directory set to {config['Paths']['Default Path']}")
+                with open('app_config.ini','w') as configfile:
+                    config.write(configfile)
+            
+            if os.path.isfile(os.path.join(app.baseDir.get(),'android-icon.png')):
+                app.icon_found = True
+                print("Icon already there")
+                MainApp.set_icon_image(os.path.join(app.baseDir.get(),'android-icon.png'))
+            global file_count
+            file_count = app.set_stats(Status.count_files(app.gameDir.get()))
+            
+            
             app.button2.config(state=tk.ACTIVE)
             app.button6.config(state=tk.ACTIVE)
             app.button14.config(state=tk.ACTIVE)
             app.dirTrue.set(1)
+            
+            print("\n##################################################################################\n")
         else:
             print('No valid game directory!')
             app.left.config(text='No valid game directory!', font='Helvetica 12')
@@ -203,7 +217,10 @@ if __name__ == '__main__':
     app = GuiWindow(root)
     root.title('spear1403\'s Ren\'py porting app')
     # root.minsize(620, 400)
-
+    
+    config = configparser.ConfigParser()
+    config.read('app_config.ini')
+    
     app.dirTrue = tk.IntVar()
     app.gameName = tk.StringVar()
     app.gameDir = tk.StringVar()

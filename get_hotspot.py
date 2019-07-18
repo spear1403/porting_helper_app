@@ -2,6 +2,7 @@ import tkinter as tk
 from PIL import Image, ImageTk, ImageChops
 from tkinter import filedialog
 import os
+import configparser
 
 def trim(im):
     bg = Image.new(im.mode, im.size, im.getpixel((0,0)))
@@ -86,14 +87,19 @@ def skip_image():
     win.destroy()
 
 def change_bg(color):
-    global canv, bg_color
-    bg_color.set(color)
-    canv.config(bg=bg_color.get())
+    global canv, config
+    canv.config(bg=color)
+    config['Colors'] = {'hotspot BG_color' : color}
+    with open('app_config.ini','w') as configfile:
+        config.write(configfile)
 
 def main(found_file, line_content):
 
-    global win, canv, rect, start_x, start_y, w, h, x, y, hotspot, resize,resize_factor, linex, liney, bg_color
+    global win, canv, rect, start_x, start_y, w, h, x, y, hotspot, resize,resize_factor, linex, liney, bg_color,config
 
+    config = configparser.ConfigParser()
+    config.read('app_config.ini')
+    
     rect = None
     linex = None
     liney = None
@@ -102,9 +108,11 @@ def main(found_file, line_content):
     x = y = 0
     resize = False
     resize_factor = 1
-    bg_color = tk.StringVar()
-    if bg_color.get() == "":
-        bg_color.set("blue")
+    if config.has_option('Colors','hotspot BG_color'):
+        bg_color = config['Colors']['hotspot BG_color']
+    else:
+        bg_color = 'blue'
+    
 
     win = tk.Toplevel()
     win.title(found_file)
@@ -168,7 +176,7 @@ def main(found_file, line_content):
     quitButton = tk.Button(frame1, text='Save', command=close_window).pack(side=tk.LEFT)
     skipButton = tk.Button(frame1, text='Skip', command=skip_image).pack(side=tk.LEFT)
 
-    canv = tk.Canvas(frame2,bg=bg_color.get(), width=w, height=h)#, cursor='crosshair')
+    canv = tk.Canvas(frame2, bg=bg_color, width=w, height=h, cursor='crosshair')
 
     canv.bind('<ButtonPress-1>', onCanvasClick)
     canv.bind("<B1-Motion>", onCanvasMove)
