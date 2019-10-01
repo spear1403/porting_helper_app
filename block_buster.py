@@ -5,16 +5,26 @@ import get_hotspot
 class BlockBuster:
 
     def block_handler(game_path, b_list, hotspot_dict):
-        image_dict = {'DHB+"':'"images/defaults/home/backgrounds/','DHH+"':'"images/defaults/home/hotspot_hover/',
-                        'DHI+"':'"images/defaults/home/hotspot_idle/','DSB+"':'"images/defaults/school/backgrounds/',
-                        'DSH+"':'"images/defaults/school/hotspots_hover/','DSI+"':'"images/defaults/school/hotspots_idle/',
-                        'EP1B+"':'"images/episode1_GS/backgrounds/','EP1H+"':'"images/episode1_GS/hotspots_hover/',
-                        'EP1I+"':'"images/episode1_GS/hotspots_idle/','EP2B+"':'"images/episode2_GS/backgrounds/',
-                        'EP2H+"':'"images/episode2_GS/hotspots_hover/','EP2I+"':'"images/episode2_GS/hotspots_idle/',
-                        'EP3B+"':'"images/episode3_GS/backgrounds/','EP3H+"':'"images/episode3_GS/hotspots_hover/',
-                        'EP3I+"':'"images/episode3_GS/hotspots_idle/','EP4B+"':'"images/episode4_GS/backgrounds/',
-                        'EP4H+"':'"images/episode4_GS/hotspot_hover/','EP5B+"':'"images/episode5_GS/backgrounds/',
-                        'EP5H+"':'"images/episode5_GS/hotspot_hover/','EP5I+"':'"images/episode5_GS/hotspot_idle/'
+        image_dict = {'DHB+"':'"images/defaults/home/backgrounds/',
+                        'DHH+"':'"images/defaults/home/hotspot_hover/',
+                        'DHI+"':'"images/defaults/home/hotspot_idle/',
+                        'DSB+"':'"images/defaults/school/backgrounds/',
+                        'DSH+"':'"images/defaults/school/hotspots_hover/',
+                        'DSI+"':'"images/defaults/school/hotspots_idle/',
+                        'EP1B+"':'"images/episode1_GS/backgrounds/',
+                        'EP1H+"':'"images/episode1_GS/hotspots_hover/',
+                        'EP1I+"':'"images/episode1_GS/hotspots_idle/',
+                        'EP2B+"':'"images/episode2_GS/backgrounds/',
+                        'EP2H+"':'"images/episode2_GS/hotspots_hover/',
+                        'EP2I+"':'"images/episode2_GS/hotspots_idle/',
+                        'EP3B+"':'"images/episode3_GS/backgrounds/',
+                        'EP3H+"':'"images/episode3_GS/hotspots_hover/',
+                        'EP3I+"':'"images/episode3_GS/hotspots_idle/',
+                        'EP4B+"':'"images/episode4_GS/backgrounds/',
+                        'EP4H+"':'"images/episode4_GS/hotspot_hover/',
+                        'EP5B+"':'"images/episode5_GS/backgrounds/',
+                        'EP5H+"':'"images/episode5_GS/hotspot_hover/',
+                        'EP5I+"':'"images/episode5_GS/hotspot_idle/'
                         }
         showerblock_destinations = {
                         "zone_complete":"images/showerblock01/showerblock_gui/showerblock01_zone_complete_%s.png",
@@ -175,73 +185,72 @@ class BlockBuster:
                         if not '"' in hover_line:
                             print("No hover image")
                             return empty_list
+                        ############ No more secrets ###########################
                         for k,v in image_dict.items():
                             if k in hover_line:
                                 print(k, 'corresponds to', v)
                                 hover_line = hover_line.replace(k,v)
                                 break
-
+                        ########################################################
                         image = hover_line.split('"')[1]
                         ############## Spacecorps XXX ##########################
-                        for k,v in showerblock_destinations.items():
-                            if k in hover_line:
-                                print(k, 'corresponds to', v)
-                                image = v
-                                break
-
-                        for k,v in showerblock_chars.items():
-                            if k in hover_line:
-                                print(k, 'corresponds to', v)
-                                image = v
-                                break
+                        if "showerblock_destinations" in hover_line:
+                            for k,v in showerblock_destinations.items():
+                                if k in hover_line:
+                                    image = v
+                                    break
+                        if "showerblock_chars" in hover_line:
+                            for k,v in showerblock_chars.items():
+                                if k in hover_line:
+                                    image = v
+                                    break
                         ########################################################
 
                         image = image.lstrip("/")
                         print(image)
                         ############## Lylas Curse #############################
-                        # if "BG_" in image:
-                        #     image = image.replace("BG_","images/Environments/")+".png"
-                        #     print (image)
-                        #     env_dirs = next(os.walk(os.path.join(game_path,"images/Environments/")))[1]
-                        #     if env_dirs:
-                        #         print (env_dirs)
-                        #         env_dirs.sort(key=len, reverse=True)
-                        #         print (env_dirs)
-                        #         for e in env_dirs:
-                        #             if e in image:
-                        #                 image = image.replace(e+"_",e+"/")
-                        #                 print (image)
-                        #                 second_dirs = next(os.walk(os.path.join(game_path,"images/Environments/",e+"/")))[1]
-                        #                 if second_dirs:
-                        #                     print (second_dirs)
-                        #                     second_dirs.sort(key=len, reverse=True)
-                        #                     print (second_dirs)
-                        #                     for s in second_dirs:
-                        #                         if s in image:
-                        #                             image = image.replace(s+"_",s+"/")
-                        #                             print (image)
-                        #                             break
-                        #                 break
-                        # if "PShop_" in image:
-                        #     image = image.replace("PShop_","images/PShop/")+".png"
-                        #     env_dirs = next(os.walk(os.path.join(game_path,"images/PShop/")))[1]
-                        #     if env_dirs:
-                        #         print (env_dirs)
-                        #         env_dirs.sort(key=len, reverse=True)
-                        #         print (env_dirs)
-                        #         for e in env_dirs:
-                        #             if e in image:
-                        #                 image = image.replace(e+"_",e+"/")
-                        #                 second_dirs = next(os.walk(os.path.join(game_path,"images/PShop/",e+"/")))[1]
-                        #                 if second_dirs:
-                        #                     print (second_dirs)
-                        #                     second_dirs.sort(key=len, reverse=True)
-                        #                     print (second_dirs)
-                        #                     for s in second_dirs:
-                        #                         if s in image:
-                        #                             image = image.replace(s+"_",s+"/")
-                        #                             break
-                        #                 break
+                        if "BG_" in image:
+                            image_split = image.split("_")
+                            print(image_split)
+                            image = image.replace("BG_","images/Environments/")+".png"
+                            print (image)
+                            env_dirs = next(os.walk(os.path.join(game_path,"images/Environments/")))[1]
+                            if env_dirs:
+                                for i in image_split:
+                                    if i in env_dirs:
+                                        image = image.replace(i+"_",i+"/")
+                                        print (image)
+                                        break
+                                second_dirs = next(os.walk(os.path.join(game_path,"images/Environments/",i+"/")))[1]
+                                if second_dirs:
+                                    print (second_dirs)
+                                    second_dirs.sort(key=len, reverse=True)
+                                    print (second_dirs)
+                                    for s in second_dirs:
+                                        if s in image:
+                                            image = image.replace(s+"_",s+"/")
+                                            print (image)
+                                            break
+                        if "PShop_" in image:
+                            image = image.replace("PShop_","images/PShop/")+".png"
+                            env_dirs = next(os.walk(os.path.join(game_path,"images/PShop/")))[1]
+                            if env_dirs:
+                                print (env_dirs)
+                                env_dirs.sort(key=len, reverse=True)
+                                print (env_dirs)
+                                for e in env_dirs:
+                                    if e in image:
+                                        image = image.replace(e+"_",e+"/")
+                                        second_dirs = next(os.walk(os.path.join(game_path,"images/PShop/",e+"/")))[1]
+                                        if second_dirs:
+                                            print (second_dirs)
+                                            second_dirs.sort(key=len, reverse=True)
+                                            print (second_dirs)
+                                            for s in second_dirs:
+                                                if s in image:
+                                                    image = image.replace(s+"_",s+"/")
+                                                    break
+                                        break
                         ########################################################
 
                         image = image.replace(r"%s",'hover')

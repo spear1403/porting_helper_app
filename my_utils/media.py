@@ -23,7 +23,7 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
     if image:
         image_type = imghdr.what(file)
         print(image_type)
-        if image_type.lower()=='webp':
+        if image_type =='webp':
             print("found one")
             try:
                 new_image = Image.open(file)
@@ -47,7 +47,7 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
         cmd = f'{cwebp} "{file}" -q {quality} -z 6 -mt -v -quiet -o "{tmpFile}"'
     elif audio:
         tmpFile = tmpFile + ".mp3"
-        cmd = f'{ffmpeg} -i "{file}" -codec:a libmp3lame -loglevel warning -vn -qscale:a 7 "{tmpFile}"'
+        cmd = f'{ffmpeg} -i "{file}" -codec:a libmp3lame -loglevel warning -vn -qscale:a {quality} "{tmpFile}"'
     elif video:
         tmpFile = tmpFile + ".webm"
         cmd = f'{ffmpeg} -y -i "{file}" {vf_scale} -c:v libvpx -pix_fmt yuv420p -loglevel warning -threads 2 -slices 8 -lag-in-frames 16 -auto-alt-ref 1 -c:a libvorbis -g 120 -level 216 -qmin {quality-3} -crf {quality} -qmax {quality+3} -b:v 0 -qscale:a 3 "{tmpFile}"'

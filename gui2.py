@@ -48,20 +48,20 @@ class MainApp:
                 print(f">>>default directory set to {config['Paths']['Default Path']}")
                 with open('app_config.ini','w') as configfile:
                     config.write(configfile)
-            
+
             if os.path.isfile(os.path.join(app.baseDir.get(),'android-icon.png')):
                 app.icon_found = True
                 print("Icon already there")
                 MainApp.set_icon_image(os.path.join(app.baseDir.get(),'android-icon.png'))
             global file_count
             file_count = app.set_stats(Status.count_files(app.gameDir.get()))
-            
-            
+
+
             app.button2.config(state=tk.ACTIVE)
             app.button6.config(state=tk.ACTIVE)
             app.button14.config(state=tk.ACTIVE)
             app.dirTrue.set(1)
-            
+
             print("\n##################################################################################\n")
         else:
             print('No valid game directory!')
@@ -102,8 +102,8 @@ class MainApp:
                 app.set_checkmark(5)
 
             if app.CheckVar3.get() == 1:
-                q = 65
-                # q = app.quality_slider.get()
+                # q = 65
+                q = app.image_quality_slider.get()
                 image_files = Definitions.listing_files(app.gameDir.get(), '.png', '.bmp', '.jpg', '.jpeg', '.webp', '.pic')
                 if image_files:
                     for index,image in enumerate(image_files):
@@ -115,24 +115,26 @@ class MainApp:
 
             if app.CheckVar4.get() == 1:
                 # crf = 44 # Max's Life, Solvalley School
-                crf = 23 # Default
-                # crf = app.video_quality_slider.get()
+                # crf = 23 # Default
+                crf = app.video_quality_slider.get()
                 video_files = Definitions.listing_files(app.gameDir.get(), '.ogv','.mpg','.m4v', '.avi', '.webm', '.mp4', '.mkv')
                 if video_files:
                     for index,video in enumerate(video_files):
                         app.set_percent(int(index+1)/len(video_files)*100)
                         app.set_progress_text('Processing---{0}({1}/{2})'.format(os.path.basename(video), int(index+1), len(video_files)))
+                        print('Processing---{0}({1}/{2})'.format(os.path.basename(video), int(index+1), len(video_files)))
                         media.compress_media(video, quality=crf, video=True, OS=app.OS)
                 print("Done")
                 app.set_checkmark(8)
 
             if app.CheckVar6.get() == 1:
+                aq = app.audio_quality_slider.get()
                 audio_files = Definitions.listing_files(app.gameDir.get(), '.mp3','.ogg', '.wav', '.opus')
                 if audio_files:
                     for index,audio in enumerate(audio_files):
                         app.set_percent(int(index+1)/len(audio_files)*100)
                         app.set_progress_text('Processing---{0}({1}/{2})'.format(os.path.basename(audio), int(index+1), len(audio_files)))
-                        media.compress_media(audio, audio=True, OS=app.OS)
+                        media.compress_media(audio, quality=aq, audio=True, OS=app.OS)
                 print("Done")
                 app.set_checkmark(7)
 
@@ -217,10 +219,10 @@ if __name__ == '__main__':
     app = GuiWindow(root)
     root.title('spear1403\'s Ren\'py porting app')
     # root.minsize(620, 400)
-    
+
     config = configparser.ConfigParser()
     config.read('app_config.ini')
-    
+
     app.dirTrue = tk.IntVar()
     app.gameName = tk.StringVar()
     app.gameDir = tk.StringVar()

@@ -67,7 +67,6 @@ class GuiWindow(object):
         self.C4.grid(row=8)
         self.C4_label = tk.Label(self.frame2, font='Helvetica 12', text="Compress video")
         self.C4_label.grid(row=8, column=1, sticky=tk.W)
-
         self.CheckVar5 = tk.IntVar()
         self.C5 = tk.Checkbutton(self.frame2, variable=self.CheckVar5)
         self.C5.grid(row=5)
@@ -99,27 +98,37 @@ class GuiWindow(object):
         self.button15.pack(pady=10, padx=25)
 
         self.button16 = tk.Button(self.frame3, text='Finish Up', width=15)
-        self.button16.config(state=tk.DISABLED)
+        # self.button16.config(state=tk.DISABLED)
         self.button16.pack(pady=10, padx=25)
-
-        self.button17 = tk.Button(self.frame3, text='More options >>>', width=15)
-        self.button17.pack(pady=10, padx=25)
-
-        # self.quality_frame = tk.LabelFrame(self.frame3,text="Image Quality")
-        # self.quality_slider = tk.Scale(self.quality_frame, from_=10, to=100, width=7, length=150, orient=tk.HORIZONTAL)
-        # self.quality_slider.pack()
-        # self.quality_slider.set("65")
-        # self.quality_frame.pack(padx=25, pady=10)
-        #
-        # self.video_quality_frame = tk.LabelFrame(self.frame3,text="Video Quality")
-        # self.video_quality_slider = tk.Scale(self.video_quality_frame, from_=10, to=55, width=7, length=150, orient=tk.HORIZONTAL)
-        # self.video_quality_slider.pack()
-        # self.video_quality_slider.set("23")
-        # self.video_quality_frame.pack(padx=25, pady=10)
 
         self.frame3.pack(side=tk.RIGHT, padx=10)
 
         self.frame4.pack(fill=tk.X)
+
+        self.frame8 = tk.Frame(master)
+
+        self.image_quality_frame = tk.LabelFrame(self.frame8,text="Image Quality")
+        self.image_quality_slider = tk.Scale(self.image_quality_frame, from_=10, to=100, width=7, length=150, orient=tk.HORIZONTAL)
+        self.image_quality_slider.pack()
+        self.image_quality_slider.set("65")
+        self.image_quality_frame.pack(side=tk.LEFT, padx=10)
+
+        self.audio_quality_frame = tk.LabelFrame(self.frame8,text="Audio Quality(lower is better)")
+        self.audio_quality_slider = tk.Scale(self.audio_quality_frame, from_=0, to=9, width=7, length=150, orient=tk.HORIZONTAL)
+        self.audio_quality_slider.pack()
+        self.audio_quality_slider.set("7")
+        self.audio_quality_frame.pack(side=tk.LEFT, padx=10)
+
+        self.video_quality_frame = tk.LabelFrame(self.frame8,text="Video Quality")
+        self.video_quality_slider = tk.Scale(self.video_quality_frame, from_=10, to=55, width=7, length=150, orient=tk.HORIZONTAL)
+        self.video_quality_slider.pack()
+        self.video_quality_slider.set("23")
+        self.video_quality_frame.pack(side=tk.LEFT, padx=10)
+
+        self.button17 = tk.Button(self.frame8, text='Default', width=15, command = self.toggle_default_quality)
+        self.button17.pack(side=tk.LEFT, padx=25)
+
+        self.frame8.pack(fill=tk.X)
 
         self.frame5 = tk.Frame(master)
 
@@ -145,6 +154,11 @@ class GuiWindow(object):
         self.set_stats(self.stat_list)
 
         self.frame7.pack()
+
+    def toggle_default_quality(self):
+        self.image_quality_slider.set("65")
+        self.audio_quality_slider.set("7")
+        self.video_quality_slider.set("23")
 
     def close_windows(self):
         self.master.destroy()

@@ -7,7 +7,7 @@ import configparser
 def trim(im):
     bg = Image.new(im.mode, im.size, im.getpixel((0,0)))
     diff = ImageChops.difference(im, bg)
-    diff = ImageChops.add(diff, diff, 2.0, -100)
+    diff = ImageChops.add(diff, diff, 2.0, -50)
     bbox = diff.getbbox()
 
     return bbox
@@ -99,7 +99,7 @@ def main(found_file, line_content):
 
     config = configparser.ConfigParser()
     config.read('app_config.ini')
-    
+    automated_hotspot = None
     rect = None
     linex = None
     liney = None
@@ -112,7 +112,7 @@ def main(found_file, line_content):
         bg_color = config['Colors']['hotspot BG_color']
     else:
         bg_color = 'blue'
-    
+
 
     win = tk.Toplevel()
     win.title(found_file)
@@ -130,8 +130,15 @@ def main(found_file, line_content):
     print("screen size : ({0}, {1})".format(screen_width, screen_heigth))
     w, h = slika.size
     print(slika.format,slika.size,slika.mode)
-    # slika = slika.convert("RGB")
-    automated_hotspot = trim(slika)
+    try:
+        imbox = slika.convert("RGBa")
+
+    except ValueError as e:
+        print(e)
+        imbox = slika
+        pass
+    automated_hotspot = imbox.getbbox()
+    # automated_hotspot = trim(imbox)
 
 
     if w > screen_width-30 or h > screen_heigth-70:
@@ -160,21 +167,21 @@ def main(found_file, line_content):
     if resize:
         slika = slika.resize((w, h), Image.ANTIALIAS)
 
-    win.geometry('{}x{}+0+0'.format(w+20, h+90))
-    win.minsize(520, h)
+    win.geometry('+0+0')
+    # win.minsize(520, h)
     frame1 = tk.Frame(win, width=w)
     frame1.pack()
     frame2 = tk.LabelFrame(win, width=w, height=h, pady=10, text=line_content)
     frame2.pack()
 
+    quitButton = tk.Button(frame1, text='Save', command=close_window).pack(side=tk.LEFT)
+    skipButton = tk.Button(frame1, text='Skip', command=skip_image).pack(side=tk.LEFT)
+    space_text = tk.Label(frame1,text="                       ").pack(side=tk.LEFT)
     bg_text = tk.Label(frame1,text="Change background color:").pack(side=tk.LEFT)
     change_blue = tk.Button(frame1, bg="blue",width=2, command=lambda:change_bg("blue")).pack(side=tk.LEFT)
     change_black = tk.Button(frame1, bg='black',width=2, command=lambda:change_bg("black")).pack(side=tk.LEFT)
     change_white = tk.Button(frame1, bg='white',width=2, command=lambda:change_bg("white")).pack(side=tk.LEFT)
     change_red = tk.Button(frame1, bg='red',width=2, command=lambda:change_bg("red")).pack(side=tk.LEFT)
-    space_text = tk.Label(frame1,text="                                                         ").pack(side=tk.LEFT)
-    quitButton = tk.Button(frame1, text='Save', command=close_window).pack(side=tk.LEFT)
-    skipButton = tk.Button(frame1, text='Skip', command=skip_image).pack(side=tk.LEFT)
 
     canv = tk.Canvas(frame2, bg=bg_color, width=w, height=h, cursor='crosshair')
 
