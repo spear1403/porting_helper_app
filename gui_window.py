@@ -13,6 +13,7 @@ class GuiWindow(object):
         self.blank = ImageTk.PhotoImage(file = os.path.join("images", "blank.png"))
         self.icon = ImageTk.PhotoImage(file = os.path.join("images", "android-icon.png"))
         self.no_image = ImageTk.PhotoImage(file = os.path.join("images", "no_image.png"))
+        self.default = ImageTk.PhotoImage(file = os.path.join("images", "default.png"))
         self.file_types =["Archive files","Image Files","Audio Files","Video Files","Rpy Files","Rpyc Files"]
         self.stat_list = [0] * len(self.file_types)
         self.icon_found = False
@@ -109,24 +110,27 @@ class GuiWindow(object):
 
         self.image_quality_frame = tk.LabelFrame(self.frame8,text="Image Quality")
         self.image_quality_slider = tk.Scale(self.image_quality_frame, from_=10, to=100, width=7, length=150, orient=tk.HORIZONTAL)
-        self.image_quality_slider.pack()
+        self.image_quality_slider.pack(side=tk.LEFT)
         self.image_quality_slider.set("65")
+        self.image_default = tk.Button(self.image_quality_frame, image=self.default, command = lambda:self.image_quality_slider.set("65"))
+        self.image_default.pack(side=tk.LEFT, padx=5)
         self.image_quality_frame.pack(side=tk.LEFT, padx=10)
 
         self.audio_quality_frame = tk.LabelFrame(self.frame8,text="Audio Quality(lower is better)")
         self.audio_quality_slider = tk.Scale(self.audio_quality_frame, from_=0, to=9, width=7, length=150, orient=tk.HORIZONTAL)
-        self.audio_quality_slider.pack()
+        self.audio_quality_slider.pack(side=tk.LEFT)
         self.audio_quality_slider.set("7")
+        self.audio_default = tk.Button(self.audio_quality_frame, image=self.default, command = lambda:self.audio_quality_slider.set("7"))
+        self.audio_default.pack(side=tk.LEFT, padx=5)
         self.audio_quality_frame.pack(side=tk.LEFT, padx=10)
 
         self.video_quality_frame = tk.LabelFrame(self.frame8,text="Video Quality")
         self.video_quality_slider = tk.Scale(self.video_quality_frame, from_=10, to=55, width=7, length=150, orient=tk.HORIZONTAL)
-        self.video_quality_slider.pack()
+        self.video_quality_slider.pack(side=tk.LEFT)
         self.video_quality_slider.set("23")
+        self.video_default = tk.Button(self.video_quality_frame, image=self.default, command = lambda:self.video_quality_slider.set("23"))
+        self.video_default.pack(side=tk.LEFT, padx=5)
         self.video_quality_frame.pack(side=tk.LEFT, padx=10)
-
-        self.button17 = tk.Button(self.frame8, text='Default', width=15, command = self.toggle_default_quality)
-        self.button17.pack(side=tk.LEFT, padx=25)
 
         self.frame8.pack(fill=tk.X)
 
@@ -154,11 +158,6 @@ class GuiWindow(object):
         self.set_stats(self.stat_list)
 
         self.frame7.pack()
-
-    def toggle_default_quality(self):
-        self.image_quality_slider.set("65")
-        self.audio_quality_slider.set("7")
-        self.video_quality_slider.set("23")
 
     def close_windows(self):
         self.master.destroy()
