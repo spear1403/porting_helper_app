@@ -192,6 +192,7 @@ class MainApp:
             print("Screens and Gui already patched")
         else:
             print('patching screens and gui file')
+            app.set_progress_text('>>>Patching screens and gui file')
             if os.path.isfile(os.path.join(app.gameDir.get(),'screens.rpy')):
                 screens_file = os.path.join(app.gameDir.get(),'screens.rpy')
             elif os.path.isfile(os.path.join(app.gameDir.get(),'scripts','screens.rpy')):
@@ -212,6 +213,7 @@ class MainApp:
                 gui_edit.open_gui_for_edit(gui_file)
                 app.patched.set(True)
 
+        app.set_progress_text('>>> All Done :-) <<<')
         print("\n###################################################################################")
 
 if __name__ == '__main__':

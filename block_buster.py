@@ -8,23 +8,44 @@ class BlockBuster:
         image_dict = {'DHB+"':'"images/defaults/home/backgrounds/',
                         'DHH+"':'"images/defaults/home/hotspot_hover/',
                         'DHI+"':'"images/defaults/home/hotspot_idle/',
+
                         'DSB+"':'"images/defaults/school/backgrounds/',
                         'DSH+"':'"images/defaults/school/hotspots_hover/',
                         'DSI+"':'"images/defaults/school/hotspots_idle/',
+
                         'EP1B+"':'"images/episode1_GS/backgrounds/',
                         'EP1H+"':'"images/episode1_GS/hotspots_hover/',
                         'EP1I+"':'"images/episode1_GS/hotspots_idle/',
+
                         'EP2B+"':'"images/episode2_GS/backgrounds/',
                         'EP2H+"':'"images/episode2_GS/hotspots_hover/',
                         'EP2I+"':'"images/episode2_GS/hotspots_idle/',
+
                         'EP3B+"':'"images/episode3_GS/backgrounds/',
                         'EP3H+"':'"images/episode3_GS/hotspots_hover/',
                         'EP3I+"':'"images/episode3_GS/hotspots_idle/',
+
                         'EP4B+"':'"images/episode4_GS/backgrounds/',
                         'EP4H+"':'"images/episode4_GS/hotspot_hover/',
+                        'EP4I+"':'"images/episode4_GS/hotspot_idle/',
+
                         'EP5B+"':'"images/episode5_GS/backgrounds/',
                         'EP5H+"':'"images/episode5_GS/hotspot_hover/',
-                        'EP5I+"':'"images/episode5_GS/hotspot_idle/'
+                        'EP5I+"':'"images/episode5_GS/hotspot_idle/',
+
+                        'EP6B+"':'"images/episode6_GS/backgrounds/',
+                        'EP6H+"':'"images/episode6_GS/hotspot_hover/',
+                        'EP6I+"':'"images/episode6_GS/hotspot_idle/',
+
+                        'EP7B+"':'"images/episode7_GS/backgrounds/',
+                        'EP7H+"':'"images/episode7_GS/hotspot_hover/',
+                        'EP7I+"':'"images/episode7_GS/hotspot_idle/',
+
+                        'EP8B+"':'"images/episode8_GS/backgrounds/',
+                        'EP8H+"':'"images/episode8_GS/hotspot_hover/',
+                        'EP8I+"':'"images/episode8_GS/hotspot_idle/',
+
+                        'EP9B+"':'"images/episode9_GS/backgrounds/'
                         }
         showerblock_destinations = {
                         "zone_complete":"images/showerblock01/showerblock_gui/showerblock01_zone_complete_%s.png",
