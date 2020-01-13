@@ -61,6 +61,7 @@ def compress_media(file, quality=None, video=False, video_resize='720', image=Fa
             print(f'Size crunched: {sizeReduction}')
         else:
             print("Too big :-(")
+
     except:
         pass
 
